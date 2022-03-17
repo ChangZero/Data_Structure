@@ -17,11 +17,11 @@ void main(void)
     start = clock();
 
 
-    n = power(10);
+    n = power(40);
     for(i=0;i<=n;i++)
         y = y+1;
 
     finish = clock();
-    duration = (double)(finish - start);
-    printf("y = %.0f, duration = %.0f\n", y, duration);
+    duration = (double)(finish - start)/CLOCKS_PER_SEC;
+    printf("duration = %lf\n",duration);
 }
