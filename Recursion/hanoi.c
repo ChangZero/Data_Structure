@@ -16,4 +16,5 @@ int main(void)
     int num;
     scanf("%d", &num);
     hanoi_tower(num, 'A','B','C');
+    return 0;
 }
