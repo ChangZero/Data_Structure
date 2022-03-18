@@ -1,6 +1,7 @@
-#define MAX_TERMS 1000
 #include<stdio.h>
 #include<time.h>
+#include<stdlib.h>
+#define MAX_TERMS 501
 typedef struct{
     int col;
     int row;
@@ -19,6 +20,7 @@ void FAST_TRANS(term a[], term b[]){
             row_terms[i]=0;
         for(i=1;i<=num_terms;i++)
             row_terms[a[i].col]++;
+
         starting_pos[0] =1;
         for(i=1;i<num_cols;i++)
             starting_pos[i]=starting_pos[i-1]+row_terms[i-1];
@@ -55,11 +57,19 @@ int main(void)
     clock_t start_clock, end_clock;
     double n, y, duration;
     start_clock = clock();
-    term b[11];
-    term a[11] =  {{8,7,10}, {0,2,2}, {0,6,12}, {1,4,7}, {2,0,23}, {3,3,31}, {4,1,14}, {4,5,25}, {5,6,6}, {6,0,52}, {7,4,11}};
+    term a[MAX_TERMS], b[MAX_TERMS];
 
-    SIMPLE_TRANS(a, b);
-    
+    int i,j,k=0;
+    for(i=0;i<MAX_TERMS;i++){
+        for(j=0;j<MAX_TERMS;j++){
+            a[i].col = 0;
+            a[i].row = j;
+            a[i].value = 1;
+        }
+    }
+
+    FAST_TRANS(a, b);
+
     end_clock = clock();
     duration = (double)(end_clock - start_clock)/CLOCKS_PER_SEC;
     printf("duration = %lf\n", duration);
