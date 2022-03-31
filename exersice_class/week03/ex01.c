@@ -1,6 +1,6 @@
 #include<stdio.h>
 //Stack CreateS(max_stack_size)
-#define MAX_STACK_SIZE 3
+#define MAX_STACK_SIZE 5
 typedef int element;
 element stack[MAX_STACK_SIZE];
 int top = -1; //반드시 해줘야함

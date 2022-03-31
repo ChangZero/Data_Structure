@@ -18,44 +18,10 @@ typedef enum
     operand
 } precedence;
 
-precedence stack[MAX_STACK_SIZE];
+int stack[MAX_STACK_SIZE];
 char iexpr[MAX_EXPR_SIZE];
 char pexpr[MAX_EXPR_SIZE] = "";
-static int isp[] = {0, 19, 12, 12, 13, 13, 13, 0};
-static int icp[] = {20, 19, 12, 12, 13, 13, 13, 0};
-
-int top = -1; //반드시 해줘야함
-int IsEmpty()
-{
-    return (top < 0);
-}
-int IsFull()
-{
-    return (top >= MAX_STACK_SIZE - 1);
-}
-void push(int *ptop, int item)
-{
-    if (*ptop >= MAX_STACK_SIZE - 1)
-    {
-        IsFull();
-        return;
-    }
-    printf("push: %d\n", item);
-    stack[++*ptop] = item;
-}
-
-int pop(int *ptop)
-{
-    if (*ptop == -1)
-    {
-        IsEmpty();
-    }
-    else
-    {
-        printf("pop: %d\n", stack[*ptop]);
-        return stack[(*ptop)--];
-    }
-}
+int top = -1;
 
 precedence get_token(char *psymbol, int *pn)
 {
@@ -142,17 +108,19 @@ void print_token(precedence token)
     case mod:
         printf("%");
         break;
-    default:
-        printf("%d", token);
     }
 }
+
+precedence pstack[MAX_STACK_SIZE];
+static int isp[] = {0, 19, 12, 12, 13, 13, 13, 0};
+static int icp[] = {20, 19, 12, 12, 13, 13, 13, 0};
 
 void infix_to_postfix()
 {
     char symbol;
     precedence token;
     int n = 0;
-    stack[0] = eos;
+    pstack[0] = eos;
     int top = 0;
     token = get_token(&symbol, &n);
 
@@ -163,14 +131,14 @@ void infix_to_postfix()
 
         else if (token == rparen)
         {
-            while (stack[top] != lparen)
+            while (pstack[top] != lparen)
                 print_token(pop(&top));
             pop(&top);
         }
 
         else
         {
-            while (isp[stack[top]] >= isp[token])
+            while (isp[pstack[top]] >= isp[token])
                 print_token(pop(&top));
             push(&top, token);
         }
@@ -180,11 +148,43 @@ void infix_to_postfix()
     printf("\n");
 }
 
+int IsEmpty()
+{
+    return (top < 0);
+}
+int IsFull()
+{
+    return (top >= MAX_STACK_SIZE - 1);
+}
+void push(int *ptop, int item)
+{
+    if (*ptop >= MAX_STACK_SIZE - 1)
+    {
+        IsFull();
+        return;
+    }
+    printf("push: %d\n", item);
+    stack[++*ptop] = item;
+}
+
+int pop(int *ptop)
+{
+    if (*ptop == -1)
+    {
+        IsEmpty();
+    }
+    else
+    {
+        printf("pop: %d\n", stack[*ptop]);
+        return stack[(*ptop)--];
+    }
+}
+
 int main(void)
 {
     printf("please input\n");
     scanf("%s", &iexpr);
     infix_to_postfix();
-    
+
     return 0;
 }

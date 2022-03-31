@@ -1,139 +1,177 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #define MAX_STACK_SIZE 100
 #define MAX_EXPR_SIZE 100
 
-typedef enum {lparen, rparen, plus, minus, times, divide, mod, eos, operand} precedence;
-precedence stack[MAX_STACK_SIZE];
-char iexpr[MAX_EXPR_SIZE];
-char pexpr[MAX_EXPR_SIZE] = "";
-static int isp[] = {0,19,12,12,13,13,13,0};
-static int icp[] = {20,19,12,12,13,13,13,0};
+typedef enum
+{
+    lparen,
+    rparen,
+    plus,
+    minus,
+    times,
+    divide,
+    mod,
+    eos,
+    operand
+} precedence;
 
-int top = -1; //ë°˜ë“œì‹œ í•´ì¤˜ì•¼í•¨
-int IsEmpty()
+int stack[MAX_STACK_SIZE];
+char iexpr[MAX_EXPR_SIZE];
+char pexpr[MAX_EXPR_SIZE];
+
+static int isp[] = {0, 19, 12, 12, 13, 13, 13, 0};
+static int icp[] = {20, 19, 12, 12, 13, 13, 13, 0};
+
+void print_token(int token)
 {
-    return (top<0);
+    switch (token)
+    {
+    case plus:
+        printf("+");
+        break;
+    case minus:
+        printf("-");
+        break;
+    case divide:
+        printf("/");
+        break;
+    case times:
+        printf("*");
+        break;
+    case mod:
+        printf("%%");
+        break;
+    default:
+        break;
+    }
 }
-int IsFull()
+
+void push(int *ptop, int item)
 {
-    return (top>=MAX_STACK_SIZE-1);
-}
-void push(int *ptop, precedence item){
-    if(*ptop >= MAX_STACK_SIZE-1){
-        IsFull();
+    if (*ptop >= MAX_STACK_SIZE - 1)
+    {
         return;
     }
     stack[++*ptop] = item;
 }
-precedence pop(int *ptop){
-    if(*ptop == -1)
-        return IsEmpty();
-    return stack[(*ptop)--];
+int pop(int *ptop)
+{
+    if (*ptop == -1)
+    {
+        exit(1);
+    }
+    else
+    {
+        return stack[(*ptop)--];
+    }
 }
 
-int eval()
+precedence get_token(char *symbol, int *n)
+{
+    *symbol = iexpr[*n];
+    (*n)++;
+
+    switch (*symbol)
+    {
+    case '(':
+        return lparen;
+    case ')':
+        return rparen;
+    case '+':
+        return plus;
+    case '-':
+        return minus;
+    case '*':
+        return times;
+    case '/':
+        return divide;
+    case '%':
+        return mod;
+    case ' ':
+        return eos;
+    default:
+        return operand;
+    }
+}
+
+int eval(void)
 {
     precedence token;
+    int op1, op2, n = 0, top = -1;
     char symbol;
-    int op1, op2;
-    int n=0;
-    int top=-1;
     token = get_token(&symbol, &n);
-    while(token != eos){
-        if(token == operand)
-            push(&top, symbol='0');
+    while (token != eos)
+    {
+        if (token == operand)
+            push(&top, symbol - '0');
         else
         {
             op2 = pop(&top);
             op1 = pop(&top);
-            switch (token){
-                case plus:
-                    push(&top, op1+op2);
-                    break;
-                case minus:
-                    push(&top, op1-op2);
-                    break;
-                case times:
-                    push(&top, op1*op2);
-                    break;
-                case divide:
-                    push(&top, op1/op2);
-                    break;
-                case mod:
-                    push(&top, op1%op2);
-                    break;
+            switch (token)
+            {
+            case plus:
+                push(&top, op1 + op2);
+                break;
+            case minus:
+                push(&top, op1 - op2);
+                break;
+            case times:
+                push(&top, op1 * op2);
+                break;
+            case divide:
+                push(&top, op1 / op2);
+                break;
+            case mod:
+                push(&top, op1 % op2);
+                break;
+            default:
+                break;
             }
         }
         token = get_token(&symbol, &n);
-    }
+    } // while
     return pop(&top);
-}
-
-precedence get_token(char *psymbol, int *pn)
-{
-    *psymbol = iexpr[(*pn)++];
-    switch (*psymbol)
-    {
-    case '(':return lparen;
-    case ')':return rparen;
-    case '+':return plus;
-    case '-':return minus;
-    case '*':return times;
-    case '/':return divide;
-    case '%':return mod;
-    case ' ':return eos;
-    default: return operand;
-    }
 }
 
 void infix_to_postfix(void)
 {
+    // e´Â ÁÖ¾îÁø ÁßÀ§Ç¥±â½ÄÀ¸·Î ³¡Àº ;À¸·Î Ç¥½Ã
+    // ISP¿Í ICP´Â ¿ì¼± ¼øÀ§¸¦ ¹İÈ¯ÇØÁÖ´Â ÇÔ¼ö
+    // pos´Â e¿¡¼­ ÇöÀç À§Ä¡
     char symbol;
     precedence token;
-    int n = 0;
-    stack[0] = eos;
-    int top = 0;
-    token = get_token(&symbol, &n);
-
-    for(;token != eos;token = get_token(&symbol, &n)){
-        if(token==operand)
+    int n = 0, top = 0;
+    stack[top] = eos;
+    for (; token != eos; token = get_token(&symbol, &n))
+    {
+        if (token == operand)
             printf("%c", symbol);
-
-        else if (token==rparen){
+        else if (token == rparen)
+        {
             while (stack[top] != lparen)
                 print_token(pop(&top));
-            pop(&top);
+            pop(&top); // ¿ŞÂÊ°ıÈ£¸¦ ¹ö¸²
         }
-
-        else{
-            while (isp[stack[top]] >= isp[token])
+        else
+        {
+            while (isp[stack[top]] >= icp[token])
                 print_token(pop(&top));
             push(&top, token);
-        }
-    }
-    while ((token=pop(&top))!=eos)
+        } // else
+    }     // for
+    while ((token = pop(&top)) != eos)
         print_token(token);
-    printf("\n");
-}
-
-void print_token(precedence ch)
-{
-    strcat(pexpr,ch);
+    print_token('\n');
 }
 
 int main(void)
 {
-    char infix[60], postfix[20];
-    printf("ìƒ˜í”Œì„ ì…ë ¥í•˜ì„¸ìš”\n");
-    while(1){
-        gets(infix);
-        if(strcmp(infix, "END-OF-INPUT")==0)
-            break;
-        
-    }
+    printf("Please input string: ");
+    scanf("%s", iexpr);
+    infix_to_postfix();
 
     return 0;
 }
