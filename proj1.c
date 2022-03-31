@@ -89,7 +89,7 @@ precedence get_token(char *symbol, int *n)
         return divide;
     case '%':
         return mod;
-    case ' ':
+    case '\0':
         return eos;
     default:
         return operand;
@@ -145,7 +145,7 @@ void infix_to_postfix(void)
     precedence token;
     int n = 0, top = 0;
     stack[top] = eos;
-    for (; token != eos; token = get_token(&symbol, &n))
+    for (token = get_token(&symbol, &n);token != eos; token = get_token(&symbol, &n))
     {
         if (token == operand)
             printf("%c", symbol);
@@ -172,6 +172,7 @@ int main(void)
     printf("Please input string: ");
     scanf("%s", iexpr);
     infix_to_postfix();
-
+    puts(pexpr);
+    printf("%s", pexpr);
     return 0;
 }
