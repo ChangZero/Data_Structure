@@ -24,28 +24,18 @@ char pexpr[MAX_EXPR_SIZE];
 static int isp[] = {0, 19, 12, 12, 13, 13, 13, 0};
 static int icp[] = {20, 19, 12, 12, 13, 13, 13, 0};
 
-void print_token(int token)
+void print_token(precedence token, int *p)
 {
-    switch (token)
-    {
-    case plus:
-        printf("+");
-        break;
-    case minus:
-        printf("-");
-        break;
-    case divide:
-        printf("/");
-        break;
-    case times:
-        printf("*");
-        break;
-    case mod:
-        printf("%%");
-        break;
-    default:
-        break;
-    }
+    if (token == plus)
+        pexpr[(*p)++] = '+';
+    else if (token == minus)
+        pexpr[(*p)++] = '-';
+    else if (token == times)
+        pexpr[(*p)++] = '*';
+    else if (token == divide)
+        pexpr[(*p)++] = '/';
+    else if (token == mod)
+        pexpr[(*p)++] = '%';
 }
 
 void push(int *ptop, int item)
@@ -62,16 +52,12 @@ int pop(int *ptop)
     {
         exit(1);
     }
-    else
-    {
-        return stack[(*ptop)--];
-    }
+    return stack[(*ptop)--];
 }
 
-precedence get_token(char *symbol, int *n)
+precedence get_token(char expr[], char *symbol, int *n)
 {
-    *symbol = iexpr[*n];
-    (*n)++;
+    *symbol = expr[(*n)++];
 
     switch (*symbol)
     {
@@ -99,9 +85,10 @@ precedence get_token(char *symbol, int *n)
 int eval(void)
 {
     precedence token;
-    int op1, op2, n = 0, top = -1;
+    int op1, op2;
+    int n = 0, top = -1;
     char symbol;
-    token = get_token(&symbol, &n);
+    token = get_token(pexpr, &symbol, &n);
     while (token != eos)
     {
         if (token == operand)
@@ -131,7 +118,7 @@ int eval(void)
                 break;
             }
         }
-        token = get_token(&symbol, &n);
+        token = get_token(pexpr, &symbol, &n);
     } // while
     return pop(&top);
 }
@@ -143,36 +130,36 @@ void infix_to_postfix(void)
     // pos는 e에서 현재 위치
     char symbol;
     precedence token;
-    int n = 0, top = 0;
-    stack[top] = eos;
-    for (token = get_token(&symbol, &n);token != eos; token = get_token(&symbol, &n))
+    int n = 0, top = 0, p = 0;
+    stack[0] = eos;
+    for (token = get_token(iexpr, &symbol, &n); token != eos; token = get_token(iexpr, &symbol, &n))
     {
         if (token == operand)
-            printf("%c", symbol);
+            pexpr[p++] = symbol;
         else if (token == rparen)
         {
             while (stack[top] != lparen)
-                print_token(pop(&top));
+                print_token(pop(&top), &p);
             pop(&top); // 왼쪽괄호를 버림
         }
         else
         {
             while (isp[stack[top]] >= icp[token])
-                print_token(pop(&top));
+                print_token(pop(&top), &p);
             push(&top, token);
         } // else
     }     // for
     while ((token = pop(&top)) != eos)
-        print_token(token);
-    print_token('\n');
+        print_token(token, &p);
+    pexpr[p] = '\0';
 }
 
 int main(void)
 {
-    printf("Please input string: ");
+    printf("중위계산식 : ");
     scanf("%s", iexpr);
     infix_to_postfix();
-    puts(pexpr);
-    printf("%s", pexpr);
+    printf("후위계산식: %s\n", pexpr);
+    printf("결과 : %d\n", eval());
     return 0;
 }
