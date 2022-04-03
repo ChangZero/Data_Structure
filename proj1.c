@@ -1,8 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <string.h>
+#include <ctype.h>
 #define MAX_STACK_SIZE 100
 #define MAX_EXPR_SIZE 100
+
+typedef struct result
+{
+    char infix[MAX_EXPR_SIZE];
+    char postfix[MAX_EXPR_SIZE];
+    int eval_result;
+} Output;
 
 typedef enum
 {
@@ -75,7 +83,7 @@ precedence get_token(char expr[], char *symbol, int *n)
         return divide;
     case '%':
         return mod;
-    case '\0':
+    case '$':
         return eos;
     default:
         return operand;
@@ -151,15 +159,63 @@ void infix_to_postfix(void)
     }     // for
     while ((token = pop(&top)) != eos)
         print_token(token, &p);
-    pexpr[p] = '\0';
+    pexpr[p] = '$';
 }
 
+void reset()
+{
+    int i;
+    for (i = 0; i < MAX_EXPR_SIZE; i++)
+    {
+        iexpr[i] = ' ';
+        pexpr[i] = ' ';
+    }
+}
 int main(void)
 {
-    printf("중위계산식 : ");
-    scanf("%s", iexpr);
-    infix_to_postfix();
-    printf("후위계산식: %s\n", pexpr);
-    printf("결과 : %d\n", eval());
+    Output output[MAX_STACK_SIZE];
+    int num_count = 0;
+    int i = 0, k = 0, j;
+    char c;
+    FILE *fp = NULL;
+    fp = fopen("test.txt", "r");
+
+    while ((c = fgetc(fp)) != EOF)
+    {
+        if (c == '$')
+        { //'$'가 나오면 출력
+            iexpr[i] = c;
+            strcpy(output[k].infix, iexpr);
+
+            infix_to_postfix();
+            output[k].eval_result = eval();
+
+            char *ptr = strtok(pexpr, "$"); //첫번째 strtok 사용.
+            strcpy(output[k].postfix, ptr);
+
+            k++;
+            num_count++;
+            i = 0;
+            reset();
+        }
+        else if (isdigit(c)) // c가 숫자이면 infix에 저장
+            iexpr[i++] = c;
+
+        else if (isalpha(c))
+        { // c가 알파벳이면 break
+            break;
+        }
+        else if (isprint(c)) // c가 부호이면 infix에 저장
+            iexpr[i++] = c;
+    }
+    fclose(fp);
+
+    for (k = 0; k < num_count; k++)
+    {
+        printf("\n입력 스트링: %s\n", output[k].infix);
+        printf("Postfix 형태: %s\n", output[k].postfix);
+        printf("결과: %d\n", output[k].eval_result);
+    }
+    printf("END-OF-OUTPUT");
     return 0;
 }
