@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <math.h>
+
 #define MAX_STACK_SIZE 100
 #define MAX_EXPR_SIZE 100
 
@@ -97,10 +99,14 @@ int eval(void)
     int n = 0, top = -1;
     char symbol;
     token = get_token(pexpr, &symbol, &n);
+
     while (token != eos)
     {
-        if (token == operand)
+        if (token == operand){
+            // if(symbol == ' ')
+            //     break;
             push(&top, symbol - '0');
+        }
         else
         {
             op2 = pop(&top);
@@ -146,12 +152,14 @@ void infix_to_postfix(void)
             pexpr[p++] = symbol;
         else if (token == rparen)
         {
+            // pexpr[p++] = ' ';
             while (stack[top] != lparen)
                 print_token(pop(&top), &p);
             pop(&top); // 왼쪽괄호를 버림
         }
         else
         {
+            // pexpr[p++] = ' ';
             while (isp[stack[top]] >= icp[token])
                 print_token(pop(&top), &p);
             push(&top, token);
@@ -167,8 +175,8 @@ void reset()
     int i;
     for (i = 0; i < MAX_EXPR_SIZE; i++)
     {
-        iexpr[i] = ' ';
-        pexpr[i] = ' ';
+        iexpr[i] = '\0';
+        pexpr[i] = '\0';
     }
 }
 int main(void)
@@ -205,8 +213,32 @@ int main(void)
         { // c가 알파벳이면 break
             break;
         }
-        else if (isprint(c)) // c가 부호이면 infix에 저장
-            iexpr[i++] = c;
+        else if (isprint(c)){ // c가 부호이면 infix에 저장
+            switch (c)
+            {
+            case '(':
+                iexpr[i++] = c;
+                break;
+            case ')':
+                iexpr[i++] = c;
+                break;
+            case '+':
+                iexpr[i++] = c;
+                break;
+            case '-':
+                iexpr[i++] = c;
+                break;
+            case '*':
+                iexpr[i++] = c;
+                break;
+            case '/':
+                iexpr[i++] = c;
+                break;
+            case '%':
+                iexpr[i++] = c;
+                break;
+            }
+        }
     }
     fclose(fp);
 
