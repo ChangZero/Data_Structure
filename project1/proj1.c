@@ -102,7 +102,8 @@ int eval(void)
 
     while (token != eos)
     {
-        if (token == operand){
+        if (token == operand)
+        {
             // if(symbol == ' ')
             //     break;
             push(&top, symbol - '0');
@@ -144,12 +145,21 @@ void infix_to_postfix(void)
     // pos는 e에서 현재 위치
     char symbol;
     precedence token;
-    int n = 0, top = 0, p = 0;
+    int n = 0, top = 0, p = 0,i = 0;
     stack[0] = eos;
     for (token = get_token(iexpr, &symbol, &n); token != eos; token = get_token(iexpr, &symbol, &n))
     {
-        if (token == operand)
-            pexpr[p++] = symbol;
+        if (token == operand){
+            while ((token = get_token(iexpr, &symbol, &n)) == operand)
+            {
+                print_token(pop(&top), &p);
+                pexpr[p++] = symbol;
+                i++;
+            }
+            pexpr[p++] = ' ';
+            n = n - i;
+            //
+        }
         else if (token == rparen)
         {
             // pexpr[p++] = ' ';
@@ -213,7 +223,8 @@ int main(void)
         { // c가 알파벳이면 break
             break;
         }
-        else if (isprint(c)){ // c가 부호이면 infix에 저장
+        else if (isprint(c))
+        { // c가 부호이면 infix에 저장
             switch (c)
             {
             case '(':
