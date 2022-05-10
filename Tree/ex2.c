@@ -223,6 +223,6 @@ int main()
 
     root = delete_node(root, 7);
     ptr = search(root, 7);
-
+    print_tree(root);
     return 0;
 }
