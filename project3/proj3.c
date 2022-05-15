@@ -52,54 +52,96 @@ TreeNode *search(TreeNode *root, int comp_num)
 	}
 }
 
-TreeNode *add(TreeNode *root, int comp_num, int add_num)
+void add_comp(int comp_num, int add_num)
 {
-	TreeNode *ptr = root;
-	if (root == NULL)
-	{ // 값을 찾지 못한 경우
-		printf("Error : 값을 찾을 수 없습니다\n");
-		return root;
+	TreeNode *tmp = root;
+	if (comp_num < 100000)
+	{
+		printf("%6d    컴포넌트 번호 에러\n", comp_num);
+		return;
 	}
 
-	if (comp_num == ptr->comp_num)
-	{ // 값을 찾음
-		ptr->stock += add_num;
-		return root;
-	}
-	else if (comp_num < ptr->comp_num)
-	{ // 왼쪽 서브트리 탐색
-		search(ptr->left, comp_num);
-	}
-	else if (comp_num > ptr->comp_num)
-	{ // 오른쪽 서브트리 탐색
-		search(ptr->right, comp_num);
+	while (1)
+	{
+		if (tmp->comp_num > comp_num)
+		{ // tmp의 제품번호가 제품번호보다 클때 왼쪽 노드에 연결해줌
+			if (tmp->left)
+			{
+				tmp = tmp->left;
+				continue;
+			}
+			else
+			{
+				printf("%6d    그러한 컴포넌트 없음\n", comp_num);
+				break;
+			}
+		}
+		else if (tmp->comp_num < comp_num)
+		{ // tmp의 제품번호가 제품번호보다 작을때 오른쪽 노드에 연결해줌
+			if (tmp->right)
+			{
+				tmp = tmp->right;
+				continue;
+			}
+			else
+			{
+				printf("%6d    그러한 컴포넌트 없음\n", comp_num);
+				break;
+			}
+		}
+		else
+		{ //재고량 추가
+			tmp->stock += add_num;
+			break;
+		}
 	}
 }
-
-TreeNode *remo(TreeNode *root, int comp_num, int remove_num)
+void remove_comp(int comp_num, int remove_num)
 {
-	TreeNode *ptr = root;
-	if (root == NULL)
-	{ // 값을 찾지 못한 경우
-		printf("Error : 값을 찾을 수 없습니다\n");
-		return root;
+	TreeNode *tmp = root;
+
+	if (comp_num < 100000)
+	{
+		printf("%6d    컴포넌트 번호 에러\n", comp_num);
+		return;
 	}
 
-	if (comp_num == ptr->comp_num)
-	{ // 값을 찾음
-		if (ptr->stock < remove_num)
-			printf("재고량이 충분하지 않음\n");
+	while (1)
+	{
+		if (tmp->comp_num > comp_num)
+		{ // tmp의 제품 번호가 제품 번호보다 클때 왼쪽에 연결
+			if (tmp->left)
+			{
+				tmp = tmp->left;
+				continue;
+			}
+			else
+			{
+				printf("%6d    그러한 컴포넌트 없음\n", comp_num);
+				break;
+			}
+		}
+		else if (tmp->comp_num < comp_num)
+		{ // tmp의 제품 번호가 제품 번호보다 작을때 오른쪽에 연결
+			if (tmp->right)
+			{
+				tmp = tmp->right;
+				continue;
+			}
+			else
+			{
+				printf("%6d    그러한 컴포넌트 없음\n", comp_num);
+				break;
+			}
+		}
 		else
-			ptr->stock -= remove_num;
-		return root;
-	}
-	else if (comp_num < ptr->comp_num)
-	{ // 왼쪽 서브트리 탐색
-		search(ptr->left, comp_num);
-	}
-	else if (comp_num > ptr->comp_num)
-	{ // 오른쪽 서브트리 탐색
-		search(ptr->right, comp_num);
+		{ //재고량 제거
+			if (tmp->stock >= remove_num)
+				tmp->stock -= remove_num;
+			else //부족할 경우
+				printf("%6d    재고량이 충분하지 않음\n", comp_num);
+			break;
+		}
 	}
 }
 
@@ -374,13 +416,13 @@ int main()
 		case 'A':
 			fscanf(fp, "%d %d", &comp_num, &add_num);
 			printf("%d %d\n", comp_num, add_num);
-			root = add(root, comp_num, add_num);
+			add_comp(comp_num, add_num);
 			break;
 
 		case 'R':
 			fscanf(fp, "%d %d", &comp_num, &remove_num);
 			printf("%d %d\n", comp_num, remove_num);
-			root = remo(root, comp_num, remove_num);
+			remove_comp(comp_num, remove_num);
 			break;
 
 		case 'P':
