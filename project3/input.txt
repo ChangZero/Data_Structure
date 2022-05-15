@@ -8,7 +8,5 @@ N 222222 Monitor                11          5
 N 191919 Hard Disc              12          3
 N 100000 Laser Printer          11          2                  
 A 101001                        4                  
-R 110010                        3
-D 101001                  
 P
 X

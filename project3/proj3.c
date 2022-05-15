@@ -11,36 +11,102 @@ typedef struct node
 	TreeNode *left;
 	TreeNode *right;
 };
-
 TreeNode *root = NULL;
-TreeNode *ptr = NULL;
+
+
+int err_num(int comp_num)
+{
+	if (comp_num < 100000)
+	{
+		printf("%6d    ÄÄÆ÷³ÍÆ® ¹øÈ£ ¿¡·¯\n", comp_num);
+		return 1;
+	}
+
+	if (comp_num > 999999)
+	{
+		printf("%6d    ÄÄÆ÷³ÍÆ® ¹øÈ£ ¿¡·¯\n", comp_num);
+		return 1;
+	}
+	return 0;
+}
 
 TreeNode *search(TreeNode *root, int comp_num)
 {
 	if (root == NULL)
-	{ // ê°’ì„ ì°¾ì§€ ëª»í•œ ê²½ìš°
-		printf("Error : ê°’ì„ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤\n");
+	{ // °ªÀ» Ã£Áö ¸øÇÑ °æ¿ì
+		printf("Error : °ªÀ» Ã£À» ¼ö ¾ø½À´Ï´Ù\n");
 		return root;
 	}
 
 	if (comp_num == root->comp_num)
-	{ // ê°’ì„ ì°¾ìŒ
+	{ // °ªÀ» Ã£À½
 		return root;
 	}
 	else if (comp_num < root->comp_num)
-	{ // ì™¼ìª½ ì„œë¸ŒíŠ¸ë¦¬ íƒìƒ‰
+	{ // ¿ŞÂÊ ¼­ºêÆ®¸® Å½»ö
 		search(root->left, comp_num);
 	}
 	else if (comp_num > root->comp_num)
-	{ // ì˜¤ë¥¸ìª½ ì„œë¸ŒíŠ¸ë¦¬ íƒìƒ‰
+	{ // ¿À¸¥ÂÊ ¼­ºêÆ®¸® Å½»ö
 		search(root->right, comp_num);
+	}
+}
+
+TreeNode *add(TreeNode *root, int comp_num, int add_num)
+{
+	TreeNode *ptr = root;
+	if (root == NULL)
+	{ // °ªÀ» Ã£Áö ¸øÇÑ °æ¿ì
+		printf("Error : °ªÀ» Ã£À» ¼ö ¾ø½À´Ï´Ù\n");
+		return root;
+	}
+
+	if (comp_num == ptr->comp_num)
+	{ // °ªÀ» Ã£À½
+		ptr->stock += add_num;
+		return root;
+	}
+	else if (comp_num < ptr->comp_num)
+	{ // ¿ŞÂÊ ¼­ºêÆ®¸® Å½»ö
+		search(ptr->left, comp_num);
+	}
+	else if (comp_num > ptr->comp_num)
+	{ // ¿À¸¥ÂÊ ¼­ºêÆ®¸® Å½»ö
+		search(ptr->right, comp_num);
+	}
+}
+
+TreeNode *remo(TreeNode *root, int comp_num, int remove_num)
+{
+	TreeNode *ptr = root;
+	if (root == NULL)
+	{ // °ªÀ» Ã£Áö ¸øÇÑ °æ¿ì
+		printf("Error : °ªÀ» Ã£À» ¼ö ¾ø½À´Ï´Ù\n");
+		return root;
+	}
+
+	if (comp_num == ptr->comp_num)
+	{ // °ªÀ» Ã£À½
+		if (ptr->stock < remove_num)
+			printf("Àç°í·®ÀÌ ÃæºĞÇÏÁö ¾ÊÀ½\n");
+		else
+			ptr->stock -= remove_num;
+		return root;
+	}
+	else if (comp_num < ptr->comp_num)
+	{ // ¿ŞÂÊ ¼­ºêÆ®¸® Å½»ö
+		search(ptr->left, comp_num);
+	}
+	else if (comp_num > ptr->comp_num)
+	{ // ¿À¸¥ÂÊ ¼­ºêÆ®¸® Å½»ö
+		search(ptr->right, comp_num);
 	}
 }
 
 TreeNode *insert(TreeNode *root, int comp_num, char comp_name[], int stock, int recall)
 {
-	TreeNode *ptr;											  // íƒìƒ‰ì„ ì§„í–‰í•  í¬ì¸í„°
-	TreeNode *newNode = (TreeNode *)malloc(sizeof(TreeNode)); // newNode ìƒì„±
+	TreeNode *ptr;											  // Å½»öÀ» ÁøÇàÇÒ Æ÷ÀÎÅÍ
+	TreeNode *newNode = (TreeNode *)malloc(sizeof(TreeNode)); // newNode »ı¼º
 	newNode->comp_num = comp_num;
 	newNode->stock = stock;
 	newNode->recall = recall;
@@ -48,161 +114,209 @@ TreeNode *insert(TreeNode *root, int comp_num, char comp_name[], int stock, int 
 	newNode->left = newNode->right = NULL;
 
 	if (root == NULL)
-	{ // íŠ¸ë¦¬ê°€ ë¹„ì–´ ìˆì„ ê²½ìš°
+	{ // Æ®¸®°¡ ºñ¾î ÀÖÀ» °æ¿ì
 		root = newNode;
 		return root;
 	}
 
-	ptr = root; // root ë…¸ë“œë¶€í„° íƒìƒ‰ ì§„í–‰
+	ptr = root; // root ³ëµåºÎÅÍ Å½»ö ÁøÇà
 
 	while (ptr)
 	{
 		if (comp_num == ptr->comp_num)
-		{ // ì¤‘ë³µê°’
-			printf("Error : ì¤‘ë³µê°’ì€ í—ˆìš©ë˜ì§€ ì•ŠìŠµë‹ˆë‹¤!\n");
+		{ // Áßº¹°ª
+			printf("%6d	ÄÄÆ÷³ÍÆ® Áßº¹!\n");
 			return root;
 		}
 		else if (comp_num < ptr->comp_num)
-		{ // ì™¼ìª½ ì„œë¸ŒíŠ¸ë¦¬
+		{ // ¿ŞÂÊ ¼­ºêÆ®¸®
 			if (ptr->left == NULL)
-			{ // ë¹„ì–´ìˆë‹¤ë©´ ì¶”ê°€
+			{ // ºñ¾îÀÖ´Ù¸é Ãß°¡
 				ptr->left = newNode;
 				return root;
 			}
 			else
-			{ // ë¹„ì–´ìˆì§€ ì•Šë‹¤ë©´ ë‹¤ì‹œ íƒìƒ‰ ì§„í–‰
+			{ // ºñ¾îÀÖÁö ¾Ê´Ù¸é ´Ù½Ã Å½»ö ÁøÇà
 				ptr = ptr->left;
 			}
 		}
 		else
-		{ // key > ptr->key ì˜¤ë¥¸ìª½ ì„œë¸ŒíŠ¸ë¦¬
+		{ // key > ptr->key ¿À¸¥ÂÊ ¼­ºêÆ®¸®
 			if (ptr->right == NULL)
-			{ // ë¹„ì–´ìˆë‹¤ë©´ ì¶”ê°€
+			{ // ºñ¾îÀÖ´Ù¸é Ãß°¡
 				ptr->right = newNode;
 				return root;
 			}
 			else
-			{ // ë¹„ì–´ìˆì§€ ì•Šë‹¤ë©´ ë‹¤ì‹œ íƒìƒ‰ ì§„í–‰
+			{ // ºñ¾îÀÖÁö ¾Ê´Ù¸é ´Ù½Ã Å½»ö ÁøÇà
 				ptr = ptr->right;
 			}
 		}
 	}
 }
 
-TreeNode *delete_node(TreeNode *root, int comp_num)
-{
-	TreeNode *del = NULL;		  // ì‚­ì œí•  ë…¸ë“œ
-	TreeNode *parent = NULL;	  // ì‚­ì œí•  ë…¸ë“œì˜ ë¶€ëª¨ ë…¸ë“œ
-	TreeNode *successor = NULL;	  // ì‚­ì œí•  ë…¸ë“œì˜ ì™¼ìª½ ì„œë¸ŒíŠ¸ë¦¬ì—ì„œ ê°€ì¥ í° ë…¸ë“œ
-	TreeNode *predecessor = NULL; // successorì˜ ë¶€ëª¨ë…¸ë“œ
-	TreeNode *child = NULL;		  // ì‚­ì œí•  ë…¸ë“œì˜ ìì‹ ë…¸ë“œ
+void delete (int comp_num)
+{ //ÀÚ½ÄÀÌ ¾øÀ» ¶§ ÇÏ³ª ÀÖÀ» ¶§ µÎ°³ ÀÖÀ» ¶§
+	TreeNode *tmp = root;
+	TreeNode *ptmp = NULL;
 
-	del = root;
-	while (del != NULL)
-	{ // ì‚­ì œí•  ë…¸ë“œ íƒìƒ‰
-		if (comp_num == del->comp_num)
-		{
-			break;
-		}
-		parent = del;
-		if (comp_num < del->comp_num)
-		{
-			del = del->left;
-		}
-		else
-		{
-			del = del->right;
-		}
-	}
+	if(err_num(comp_num)==1)
+		return;
 
-	if (del == NULL)
+	while (1)
 	{
-		printf("Error : ì¡´ì¬í•˜ì§€ ì•ŠëŠ” í‚¤\n");
-		return root;
-	}
-
-	if (del->left == NULL && del->right == NULL)
-	{ // ì‚­ì œí•  ë…¸ë“œì˜ ìì‹ë…¸ë“œê°€ ì—†ëŠ” ê²½ìš°
-		if (parent != NULL)
-		{ // ë¶€ëª¨ë…¸ë“œê°€ ìˆëŠ” ê²½ìš°
-			if (parent->left == del)
-			{ // ë¶€ëª¨ë…¸ë“œì˜ ì™¼ìª½ë…¸ë“œê°€ ì‚­ì œí•  ë…¸ë“œì¼ ë•Œ
-				parent->left = NULL;
-			}
-			else
-			{ // ì˜¤ë¥¸ìª½ ì¼ ë•Œ
-				parent->right = NULL;
-			}
-		}
-		else
-		{ // ë¶€ëª¨ë…¸ë“œê°€ ì—†ëŠ” ê²½ìš° = root ë…¸ë“œ
-			root = NULL;
-		}
-	}
-	else if (del->left != NULL && del->right != NULL)
-	{ // ì‚­ì œí•  ë…¸ë“œì˜ ìì‹ ë…¸ë“œê°€ 2ê°œì¸ ê²½ìš°
-		predecessor = del;
-		successor = del->left;
-
-		while (successor->right != NULL)
-		{ // ì™¼ìª½ ì„œë¸ŒíŠ¸ë¦¬ì—ì„œ ê°€ì¥ í° ê°’ ì°¾ê¸°
-			predecessor = successor;
-			successor = successor->right;
-		}
-
-		predecessor->right = successor->left; // successorì˜ ìì‹ ë…¸ë“œ ìœ„ì¹˜ ë³€ê²½
-		successor->left = del->left;		  // successorë¥¼ ì‚­ì œí•  ë…¸ë“œì˜ ìœ„ì¹˜ë¡œ ì˜®ê¸´ ê²ƒê³¼ ê°™ìŒ
-		successor->right = del->right;
-
-		if (parent != NULL)
-		{ // ì‚­ì œí•  ë…¸ë“œì˜ ë¶€ëª¨ë…¸ë“œê°€ ìˆì„ ë•Œ
-			if (parent->left == del)
+		if (tmp->comp_num > comp_num)
+		{
+			if (tmp->left)
 			{
-				parent->left = successor;
+				ptmp = tmp;
+				tmp = tmp->left;
+				continue;
 			}
 			else
 			{
-				parent->right = successor;
+				printf("%6d    ±×·¯ÇÑ ÄÄÆ÷³ÍÆ® ¾øÀ½\n", comp_num);
+				break;
+			}
+		}
+		else if (tmp->comp_num < comp_num)
+		{
+			if (tmp->right)
+			{
+				ptmp = tmp;
+				tmp = tmp->right;
+				continue;
+			}
+			else
+			{
+				printf("%6d    ±×·¯ÇÑ ÄÄÆ÷³ÍÆ® ¾øÀ½\n", comp_num);
+				break;
 			}
 		}
 		else
 		{
-			root = successor;
-		}
-	}
-	else
-	{ //     ì‚­ì œí•  ë…¸ë“œì˜ ìì‹ ë…¸ë“œê°€ 1ê°œì¸ ê²½ìš°
-		if (del->left != NULL)
-		{ // ì™¼ìª½ ë…¸ë“œ
-			child = del->left;
-		}
-		else
-		{ // ì˜¤ë¥¸ìª½ ë…¸ë“œ
-			child = del->right;
-		}
-
-		if (parent != NULL)
-		{ // ë¶€ëª¨ë…¸ë“œê°€ ìˆëŠ” ê²½ìš°
-			if (parent->left == del)
-			{ // ë¶€ëª¨ë…¸ë“œì˜ ì™¼ìª½ ë…¸ë“œë¡œ ì‚­ì œí•  ë…¸ë“œì˜ ìì‹ë…¸ë“œ ì—°ê²°
-				parent->left = child;
+			if (ptmp)
+			{
+				if (ptmp->comp_num > tmp->comp_num)
+				{
+					if (tmp->left)
+					{
+						if (tmp->right)
+						{
+							tmp = tmp->right;
+							while (tmp->left)
+								tmp = tmp->left;
+							tmp->left = ptmp->left->left;
+							tmp = ptmp->left;
+							ptmp->left = tmp->right;
+							free(tmp);
+							break;
+						}
+						else
+						{
+							ptmp->left = tmp->left;
+							free(tmp);
+							break;
+						}
+					}
+					else
+					{
+						if (tmp->right)
+						{
+							ptmp->left = tmp->right;
+							free(tmp);
+							break;
+						}
+						else
+						{
+							ptmp->left = NULL;
+							free(tmp);
+							break;
+						}
+					}
+				}
+				else if (ptmp->comp_num < tmp->comp_num)
+				{
+					if (tmp->left)
+					{
+						if (tmp->right)
+						{
+							tmp = tmp->right;
+							while (tmp->left)
+								tmp = tmp->left;
+							tmp->left = ptmp->right->left;
+							tmp = ptmp->right;
+							ptmp->right = tmp->right;
+							free(tmp);
+							break;
+						}
+						else
+						{
+							ptmp->right = tmp->right;
+							free(tmp);
+							break;
+						}
+					}
+					else
+					{
+						if (tmp->right)
+						{
+							ptmp->right = tmp->right;
+							free(tmp);
+							break;
+						}
+						else
+						{
+							ptmp->right = NULL;
+							free(tmp);
+							break;
+						}
+					}
+				}
 			}
 			else
-			{ // ë¶€ëª¨ë…¸ë“œì˜ ì˜¤ë¥¸ìª½ ë…¸ë“œë¡œ ì‚­ì œí•  ë…¸ë“œì˜ ìì‹ë…¸ë“œ ì—°ê²°
-				parent->right = child;
+			{
+				if (tmp->left)
+				{
+					if (tmp->right)
+					{
+						tmp = tmp->right;
+						while (tmp->left)
+							tmp = tmp->left;
+						tmp->left = root->left;
+						tmp = root;
+						root = tmp->right;
+						free(tmp);
+						break;
+					}
+					else
+					{
+						tmp = root;
+						root = tmp->left;
+						free(tmp);
+						break;
+					}
+				}
+				else
+				{
+					if (tmp->right)
+					{
+						tmp = root;
+						root = tmp->right;
+						free(tmp);
+						break;
+					}
+					else
+					{
+						root = NULL;
+						free(tmp);
+						break;
+					}
+				}
 			}
 		}
-		else
-		{
-			root = child;
-		}
 	}
-
-	free(del); // ë©”ëª¨ë¦¬í•´ì œ
-	return root;
 }
-
-
 
 void print_tree(TreeNode *root)
 {
@@ -244,24 +358,29 @@ int main()
 			fscanf(fp, "%d", &comp_num);
 			fgets(comp_name, 20, fp);
 			fscanf(fp, "%d %d", &stock, &recall);
-			printf("%d %s %d %d\n", comp_num, comp_name, stock, recall);
-			root = insert(root, comp_num, comp_name, stock, recall);
+			if (err_num(comp_num) == 0)
+			{
+				printf("%d %s %d %d\n", comp_num, comp_name, stock, recall);
+				root = insert(root, comp_num, comp_name, stock, recall);
+			}
 			break;
 
 		case 'D':
 			fscanf(fp, "%d", &comp_num);
 			printf("%d\n", comp_num);
-			root = delete_node(root, comp_num);
+			delete (comp_num);
 			break;
 
 		case 'A':
 			fscanf(fp, "%d %d", &comp_num, &add_num);
 			printf("%d %d\n", comp_num, add_num);
+			root = add(root, comp_num, add_num);
 			break;
 
 		case 'R':
 			fscanf(fp, "%d %d", &comp_num, &remove_num);
 			printf("%d %d\n", comp_num, remove_num);
+			root = remo(root, comp_num, remove_num);
 			break;
 
 		case 'P':
