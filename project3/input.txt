@@ -6,12 +6,14 @@ N 121212 Mouse                  10          3
 N 212121 Power Adapter          10          3
 N 222222 Monitor                11          5
 N 191919 Hard Disc              12          3
-N 100000 Laser Printer          11          2 
+N 100000 Laser Printer          11          2
+N 99999  Error Cheak            5           1
 D 100000
 D 222222                
 A 101001                        4
 R 666666                        8
 R 666666                        10
-R 110010                        10                  
+R 123456                        20
+R 110010                        2                  
 P
 X

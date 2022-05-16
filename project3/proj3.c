@@ -13,7 +13,6 @@ typedef struct node
 };
 TreeNode *root = NULL;
 
-
 int err_num(int comp_num)
 {
 	if (comp_num < 100000)
@@ -30,44 +29,19 @@ int err_num(int comp_num)
 	return 0;
 }
 
-TreeNode *search(TreeNode *root, int comp_num)
-{
-	if (root == NULL)
-	{ // 값을 찾지 못한 경우
-		printf("Error : 값을 찾을 수 없습니다\n");
-		return root;
-	}
-
-	if (comp_num == root->comp_num)
-	{ // 값을 찾음
-		return root;
-	}
-	else if (comp_num < root->comp_num)
-	{ // 왼쪽 서브트리 탐색
-		search(root->left, comp_num);
-	}
-	else if (comp_num > root->comp_num)
-	{ // 오른쪽 서브트리 탐색
-		search(root->right, comp_num);
-	}
-}
-
 void add_comp(int comp_num, int add_num)
 {
-	TreeNode *tmp = root;
-	if (comp_num < 100000)
-	{
-		printf("%6d    컴포넌트 번호 에러\n", comp_num);
+	TreeNode *temp = root;
+	if (err_num(comp_num) == 1)
 		return;
-	}
 
 	while (1)
 	{
-		if (tmp->comp_num > comp_num)
+		if (temp->comp_num > comp_num)
 		{ // tmp의 제품번호가 제품번호보다 클때 왼쪽 노드에 연결해줌
-			if (tmp->left)
+			if (temp->left)
 			{
-				tmp = tmp->left;
+				temp = temp->left;
 				continue;
 			}
 			else
@@ -76,11 +50,11 @@ void add_comp(int comp_num, int add_num)
 				break;
 			}
 		}
-		else if (tmp->comp_num < comp_num)
+		else if (temp->comp_num < comp_num)
 		{ // tmp의 제품번호가 제품번호보다 작을때 오른쪽 노드에 연결해줌
-			if (tmp->right)
+			if (temp->right)
 			{
-				tmp = tmp->right;
+				temp = temp->right;
 				continue;
 			}
 			else
@@ -91,28 +65,25 @@ void add_comp(int comp_num, int add_num)
 		}
 		else
 		{ //재고량 추가
-			tmp->stock += add_num;
+			temp->stock += add_num;
 			break;
 		}
 	}
 }
 void remove_comp(int comp_num, int remove_num)
 {
-	TreeNode *tmp = root;
+	TreeNode *temp = root;
 
-	if (comp_num < 100000)
-	{
-		printf("%6d    컴포넌트 번호 에러\n", comp_num);
+	if (err_num(comp_num) == 1)
 		return;
-	}
 
 	while (1)
 	{
-		if (tmp->comp_num > comp_num)
+		if (temp->comp_num > comp_num)
 		{ // tmp의 제품 번호가 제품 번호보다 클때 왼쪽에 연결
-			if (tmp->left)
+			if (temp->left)
 			{
-				tmp = tmp->left;
+				temp = temp->left;
 				continue;
 			}
 			else
@@ -121,11 +92,11 @@ void remove_comp(int comp_num, int remove_num)
 				break;
 			}
 		}
-		else if (tmp->comp_num < comp_num)
+		else if (temp->comp_num < comp_num)
 		{ // tmp의 제품 번호가 제품 번호보다 작을때 오른쪽에 연결
-			if (tmp->right)
+			if (temp->right)
 			{
-				tmp = tmp->right;
+				temp = temp->right;
 				continue;
 			}
 			else
@@ -136,8 +107,8 @@ void remove_comp(int comp_num, int remove_num)
 		}
 		else
 		{ //재고량 제거
-			if (tmp->stock >= remove_num)
-				tmp->stock -= remove_num;
+			if (temp->stock >= remove_num)
+				temp->stock -= remove_num;
 			else //부족할 경우
 				printf("%6d    재고량이 충분하지 않음\n", comp_num);
 			break;
@@ -199,20 +170,20 @@ TreeNode *insert(TreeNode *root, int comp_num, char comp_name[], int stock, int 
 
 void delete (int comp_num)
 { //자식이 없을 때 하나 있을 때 두개 있을 때
-	TreeNode *tmp = root;
+	TreeNode *temp = root;
 	TreeNode *ptmp = NULL;
 
-	if(err_num(comp_num)==1)
+	if (err_num(comp_num) == 1)
 		return;
 
 	while (1)
 	{
-		if (tmp->comp_num > comp_num)
+		if (temp->comp_num > comp_num)
 		{
-			if (tmp->left)
+			if (temp->left)
 			{
-				ptmp = tmp;
-				tmp = tmp->left;
+				ptmp = temp;
+				temp = temp->left;
 				continue;
 			}
 			else
@@ -221,12 +192,12 @@ void delete (int comp_num)
 				break;
 			}
 		}
-		else if (tmp->comp_num < comp_num)
+		else if (temp->comp_num < comp_num)
 		{
-			if (tmp->right)
+			if (temp->right)
 			{
-				ptmp = tmp;
-				tmp = tmp->right;
+				ptmp = temp;
+				temp = temp->right;
 				continue;
 			}
 			else
@@ -239,78 +210,78 @@ void delete (int comp_num)
 		{
 			if (ptmp)
 			{
-				if (ptmp->comp_num > tmp->comp_num)
+				if (ptmp->comp_num > temp->comp_num)
 				{
-					if (tmp->left)
+					if (temp->left)
 					{
-						if (tmp->right)
+						if (temp->right)
 						{
-							tmp = tmp->right;
-							while (tmp->left)
-								tmp = tmp->left;
-							tmp->left = ptmp->left->left;
-							tmp = ptmp->left;
-							ptmp->left = tmp->right;
-							free(tmp);
+							temp = temp->right;
+							while (temp->left)
+								temp = temp->left;
+							temp->left = ptmp->left->left;
+							temp = ptmp->left;
+							ptmp->left = temp->right;
+							free(temp);
 							break;
 						}
 						else
 						{
-							ptmp->left = tmp->left;
-							free(tmp);
+							ptmp->left = temp->left;
+							free(temp);
 							break;
 						}
 					}
 					else
 					{
-						if (tmp->right)
+						if (temp->right)
 						{
-							ptmp->left = tmp->right;
-							free(tmp);
+							ptmp->left = temp->right;
+							free(temp);
 							break;
 						}
 						else
 						{
 							ptmp->left = NULL;
-							free(tmp);
+							free(temp);
 							break;
 						}
 					}
 				}
-				else if (ptmp->comp_num < tmp->comp_num)
+				else if (ptmp->comp_num < temp->comp_num)
 				{
-					if (tmp->left)
+					if (temp->left)
 					{
-						if (tmp->right)
+						if (temp->right)
 						{
-							tmp = tmp->right;
-							while (tmp->left)
-								tmp = tmp->left;
-							tmp->left = ptmp->right->left;
-							tmp = ptmp->right;
-							ptmp->right = tmp->right;
-							free(tmp);
+							temp = temp->right;
+							while (temp->left)
+								temp = temp->left;
+							temp->left = ptmp->right->left;
+							temp = ptmp->right;
+							ptmp->right = temp->right;
+							free(temp);
 							break;
 						}
 						else
 						{
-							ptmp->right = tmp->right;
-							free(tmp);
+							ptmp->right = temp->right;
+							free(temp);
 							break;
 						}
 					}
 					else
 					{
-						if (tmp->right)
+						if (temp->right)
 						{
-							ptmp->right = tmp->right;
-							free(tmp);
+							ptmp->right = temp->right;
+							free(temp);
 							break;
 						}
 						else
 						{
 							ptmp->right = NULL;
-							free(tmp);
+							free(temp);
 							break;
 						}
 					}
@@ -318,40 +289,40 @@ void delete (int comp_num)
 			}
 			else
 			{
-				if (tmp->left)
+				if (temp->left)
 				{
-					if (tmp->right)
+					if (temp->right)
 					{
-						tmp = tmp->right;
-						while (tmp->left)
-							tmp = tmp->left;
-						tmp->left = root->left;
-						tmp = root;
-						root = tmp->right;
-						free(tmp);
+						temp = temp->right;
+						while (temp->left)
+							temp = temp->left;
+						temp->left = root->left;
+						temp = root;
+						root = temp->right;
+						free(temp);
 						break;
 					}
 					else
 					{
-						tmp = root;
-						root = tmp->left;
-						free(tmp);
+						temp = root;
+						root = temp->left;
+						free(temp);
 						break;
 					}
 				}
 				else
 				{
-					if (tmp->right)
+					if (temp->right)
 					{
-						tmp = root;
-						root = tmp->right;
-						free(tmp);
+						temp = root;
+						root = temp->right;
+						free(temp);
 						break;
 					}
 					else
 					{
 						root = NULL;
-						free(tmp);
+						free(temp);
 						break;
 					}
 				}
@@ -367,7 +338,10 @@ void print_tree(TreeNode *root)
 		return;
 	}
 	print_tree(root->left);
-	printf("%d \t %s \t %d \t %d\n", root->comp_num, root->comp_name, root->stock, root->recall);
+	if(root->stock < root->recall)
+		printf("%d \t\t %s \t\t %d \t\t %d	*재주문 필요*\n", root->comp_num, root->comp_name, root->stock, root->recall);
+	else
+		printf("%d \t\t %s \t\t %d \t\t %d\n", root->comp_num, root->comp_name, root->stock, root->recall);
 	print_tree(root->right);
 }
 
@@ -380,7 +354,6 @@ int main()
 	int recall;
 	int add_num;
 	int remove_num;
-
 
 	FILE *fp = fopen("C:\\Coding\\Cource\\Data Structure\\project3\\input.txt", "r");
 	if (fp == NULL)
@@ -402,31 +375,30 @@ int main()
 			fscanf(fp, "%d %d", &stock, &recall);
 			if (err_num(comp_num) == 0)
 			{
-				printf("%d %s %d %d\n", comp_num, comp_name, stock, recall);
 				root = insert(root, comp_num, comp_name, stock, recall);
 			}
 			break;
 
 		case 'D':
 			fscanf(fp, "%d", &comp_num);
-			printf("%d\n", comp_num);
 			delete (comp_num);
 			break;
 
 		case 'A':
 			fscanf(fp, "%d %d", &comp_num, &add_num);
-			printf("%d %d\n", comp_num, add_num);
 			add_comp(comp_num, add_num);
 			break;
 
 		case 'R':
 			fscanf(fp, "%d %d", &comp_num, &remove_num);
-			printf("%d %d\n", comp_num, remove_num);
 			remove_comp(comp_num, remove_num);
 			break;
 
 		case 'P':
+			printf("컴포넌트 번호\t\t설명\t\t현재재고량\t재주문수준\n");
+			printf("----------------------------------------------------------------------\n");
 			print_tree(root);
+			printf("----------------------------------------------------------------------\n");
 			break;
 
 		case 'X':
