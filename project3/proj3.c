@@ -338,7 +338,7 @@ void print_tree(TreeNode *root)
 		return;
 	}
 	print_tree(root->left);
-	if(root->stock < root->recall)
+	if (root->stock < root->recall)
 		printf("%d \t\t %s \t\t %d \t\t %d	*재주문 필요*\n", root->comp_num, root->comp_name, root->stock, root->recall);
 	else
 		printf("%d \t\t %s \t\t %d \t\t %d\n", root->comp_num, root->comp_name, root->stock, root->recall);
@@ -355,7 +355,7 @@ int main()
 	int add_num;
 	int remove_num;
 
-	FILE *fp = fopen("C:\\Coding\\Cource\\Data Structure\\project3\\input.txt", "r");
+	FILE *fp = fopen("input.txt", "r");
 	if (fp == NULL)
 	{
 		printf("input file open error\n");
