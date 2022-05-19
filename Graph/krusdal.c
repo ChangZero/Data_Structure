@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <string.h>
+
 #define MAX_VERTICES 100
 #define INF 1000
 int parent[MAX_VERTICES]; // 부모 노드
@@ -123,18 +125,62 @@ void insert_heap_edge(HeapType *h, int u, int v, int weight)
 // 다음은 예제 그래프의 간선들을 삽입
 void insert_all_edges(HeapType *h)
 {
-    insert_heap_edge(h, 1, 2, 2);
-    insert_heap_edge(h, 1, 3, 8);
-    insert_heap_edge(h, 2, 3, 7);
-    insert_heap_edge(h, 2, 4, 9);
-    insert_heap_edge(h, 3, 4, 4);
-    insert_heap_edge(h, 3, 5, 10);
-    insert_heap_edge(h, 3, 6, 12);
-    insert_heap_edge(h, 5, 6, 6);
-    insert_heap_edge(h, 5, 7, 14);
-    insert_heap_edge(h, 7, 8, 3);
+    insert_heap_edge(h, 1, 2, 160);
+    insert_heap_edge(h, 1, 3, 230);
+    insert_heap_edge(h, 1, 4, 320);
+    insert_heap_edge(h, 2, 3, 100);
+    insert_heap_edge(h, 2, 4, 150);
+    insert_heap_edge(h, 3, 4, 140);
+    insert_heap_edge(h, 3, 5, 190);
+    insert_heap_edge(h, 4, 5, 60);
 }
+void trans_print(int u, int v, int key)
+{
+    char start[10];
+    char end[10];
+    switch (u)
+    {
+    case 1:
+        strcpy(start, "Ulsan");
+        break;
+    case 2:
+        strcpy(start, "Sangju");
+        break;
+    case 3:
+        strcpy(start, "Deajon");
+        break;
+    case 4:
+        strcpy(start, "Icheon");
+        break;
+    case 5:
+        strcpy(start, "Seoul");
+        break;
+    default:
+        break;
+    }
 
+    switch (v)
+    {
+    case 1:
+        strcpy(end, "Ulsan");
+        break;
+    case 2:
+        strcpy(end, "Sangju");
+        break;
+    case 3:
+        strcpy(end, "Deajon");
+        break;
+    case 4:
+        strcpy(end, "Icheon");
+        break;
+    case 5:
+        strcpy(end, "Seoul");
+        break;
+    default:
+        break;
+    }
+    printf("(%s,%s) %d \n", start, end, key);
+}
 // kruskal의 최소 비용 신장 트리 프로그램
 int kruskal(int n)
 {
@@ -153,8 +199,9 @@ int kruskal(int n)
         vset = set_find(e.v);    // 정점 v의 집합 번호
         if (uset != vset)
         { // 서로 속한 집합이 다르면
-            printf("(%d,%d) %d \n", e.u, e.v, e.key);
+            //printf("(%d,%d) %d \n", e.u, e.v, e.key);
             edge_sum += e.key;
+            trans_print(e.u, e.v, e.key);
             edge_accepted++;
             set_union(uset, vset); // 두개의 집합을 합친다.
         }
@@ -163,6 +210,7 @@ int kruskal(int n)
 }
 int main()
 {
-    printf("total: %d\n", kruskal(7));
+    printf("<Kruskal's algorithm>\n");
+    printf("\ntotal: %d\n", kruskal(5));
     return 0;
 }
