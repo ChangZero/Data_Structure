@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #define MAX_ELEMENT 200
 typedef struct
 {
@@ -64,35 +65,64 @@ element delete_max_heap(HeapType *h)
     return item;
 }
 
-int main()
+void adjust(element list[], int root, int n)
 {
-    init(&heap1);
-    element item;
-    item.key = 10;
-    insert_max_heap(&heap1, item);
-    item.key = 5;
-    insert_max_heap(&heap1, item);
-    item.key = 30;
-    insert_max_heap(&heap1, item);
-    item.key = 25;
-    insert_max_heap(&heap1, item);
-    item.key = 20;
-    insert_max_heap(&heap1, item);
-    item.key = 3;
-    insert_max_heap(&heap1, item);
+    int child, rootkey;
+    element temp;
+    temp = list[root];
+    rootkey = list[root].key;
 
-    while (heap1.heap_size > 0)
+    child = 2 * root;
+    while (child <= n)
     {
-        if (heap1.heap_size == 1)
-        {
-            item = delete_max_heap(&heap1);
-            printf("%d", item.key);
-        }
+        if ((child < n) && (list[child].key < list[child + 1].key))
+            child++;
+        if (rootkey > list[child].key)
+            break;
         else
         {
-            item = delete_max_heap(&heap1);
-            printf("%d -> ", item.key);
+            list[child / 2] = list[child];
+            child *= 2;
         }
+    }
+    list[child / 2] = temp;
+}
+
+void heapsort(element list[], int n)
+{
+    int i, j;
+    element temp;
+    for (i = n / 2; i > 0; i--)
+        adjust(list, i, n);
+    for (i = n - 1; i > 0; i--)
+    {
+        temp = list[1];
+        list[1] = list[i + 1];
+        list[i + 1] = temp;
+        adjust(list, 1, i);
+    }
+}
+
+int main()
+{
+    int i;
+    init(&heap1);
+    element item;
+
+    printf("input start\n");
+
+    for (i = 0; i < 20; i++){
+        int num;
+        printf("number: ");
+        scanf("%d", &num);
+        item.key = num;
+        insert_max_heap(&heap1, item);
+    }
+
+    printf("heap sort: ");
+    heapsort(heap1.heap, 20);
+    for (i = 1; i <= 20;i++){
+        printf("%d  ", heap1.heap[i]);
     }
 
     return 0;
