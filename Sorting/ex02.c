@@ -1,6 +1,12 @@
 #include <stdio.h>
 #define MAX_SIZE 10
-
+void swap(int *a, int *b)
+{
+    int temp;
+    temp = *a;
+    *a = *b;
+    *b = temp;
+}
 // 삽입 정렬
 void print_list(int list[])
 {
@@ -87,12 +93,41 @@ int shell_sort(int array[], int size)
     return count;
 }
 
+void quicksort(int list[], int left, int right)
+{
+    int pivot, i, j;
+    int temp;
+    if(left< right){
+        i = left;
+        j = right + 1;
+        pivot = list[left];
+        do{
+            do{
+                i++;
+            }
+            while (list[i] < pivot);
+            do{
+                j--;
+            }
+            while (list[j] > pivot);
+            if (i < j)
+            {
+                swap(&list[i], &list[j]);
+            }
+        } while (i < j);
+        swap(&list[left], &list[j]);
+        quicksort(list, left, j - 1);
+        quicksort(list, j + 1, right);
+    }
+}
+
 int main()
 {
     int i;
     int list1[MAX_SIZE] = {11, 10, 33, 22, 55, 9, 99, 81, 15, 27};
     int list2[MAX_SIZE] = {11, 10, 33, 22, 55, 9, 99, 81, 15, 27};
     int list3[MAX_SIZE] = {11, 10, 33, 22, 55, 9, 99, 81, 15, 27};
+    int list4[MAX_SIZE] = {11, 10, 33, 22, 55, 9, 99, 81, 15, 27};
     printf("------Origianl Data------\n");
     print_list(list1);
     //버블 정렬 수행
@@ -108,6 +143,12 @@ int main()
     int size = sizeof(list3) / sizeof(int);
     printf("\n------shell Sorted data------\n");
     printf("swap : %d\n", shell_sort(list3, size));
+
+
+    //quick sort
+    printf("\n-----quick sorted data------\n");
+    quicksort(list4, 0, 9);
+    print_list(list4);
 
     return 0;
 }
