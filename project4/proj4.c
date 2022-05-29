@@ -26,28 +26,30 @@ void swap(int *a, int *b)
 // print
 void print_list(int list[], int size)
 {
+    printf("( ");
     int i;
     for (i = 0; i < size; i++)
     {
         printf("%d ", list[i]);
     }
+    printf(")\n");
 }
 
 // insertion sort
 void insertion_sort(int list[], int n)
 {
     int i, j, key;
-    // ì¸í…ìŠ¤ 0ì€ ì´ë¯¸ ì •ë ¬ëœ ê²ƒìœ¼ë¡œ ë³¼ ìˆ˜ ìˆë‹¤.
+    // ÀÎÅØ½º 0Àº ÀÌ¹Ì Á¤·ÄµÈ °ÍÀ¸·Î º¼ ¼ö ÀÖ´Ù.
     for (i = 1; i < n; i++)
     {
-        key = list[i]; // í˜„ì¬ ì‚½ì…ë  ìˆ«ìì¸ ië²ˆì§¸ ì •ìˆ˜ë¥¼ key ë³€ìˆ˜ë¡œ ë³µì‚¬
+        key = list[i]; // ÇöÀç »ğÀÔµÉ ¼ıÀÚÀÎ i¹øÂ° Á¤¼ö¸¦ key º¯¼ö·Î º¹»ç
 
-        // í˜„ì¬ ì •ë ¬ëœ ë°°ì—´ì€ i-1ê¹Œì§€ì´ë¯€ë¡œ i-1ë²ˆì§¸ë¶€í„° ì—­ìˆœìœ¼ë¡œ ì¡°ì‚¬í•œë‹¤.
-        // j ê°’ì€ ìŒìˆ˜ê°€ ì•„ë‹ˆì–´ì•¼ ë˜ê³ 
-        // key ê°’ë³´ë‹¤ ì •ë ¬ëœ ë°°ì—´ì— ìˆëŠ” ê°’ì´ í¬ë©´ jë²ˆì§¸ë¥¼ j+1ë²ˆì§¸ë¡œ ì´ë™
+        // ÇöÀç Á¤·ÄµÈ ¹è¿­Àº i-1±îÁöÀÌ¹Ç·Î i-1¹øÂ°ºÎÅÍ ¿ª¼øÀ¸·Î Á¶»çÇÑ´Ù.
+        // j °ªÀº À½¼ö°¡ ¾Æ´Ï¾î¾ß µÇ°í
+        // key °ªº¸´Ù Á¤·ÄµÈ ¹è¿­¿¡ ÀÖ´Â °ªÀÌ Å©¸é j¹øÂ°¸¦ j+1¹øÂ°·Î ÀÌµ¿
         for (j = i - 1; j >= 0 && list[j] > key; j--)
         {
-            list[j + 1] = list[j]; // ë ˆì½”ë“œì˜ ì˜¤ë¥¸ìª½ìœ¼ë¡œ ì´ë™
+            list[j + 1] = list[j]; // ·¹ÄÚµåÀÇ ¿À¸¥ÂÊÀ¸·Î ÀÌµ¿
         }
 
         list[j + 1] = key;
@@ -206,12 +208,12 @@ int main()
     element item;
 
     srand(time(NULL));
-    
+
     printf("input: N=");
     scanf("%d", &size);
     printf("------------------------------\n");
 
-    int *arr_up =(int *)malloc(sizeof(int) * size);
+    int *arr_up = (int *)malloc(sizeof(int) * size);
     int *arr_down = (int *)malloc(sizeof(int) * size);
     int *arr_rand = (int *)malloc(sizeof(int) * size);
 
@@ -233,28 +235,36 @@ int main()
         swap(&arr_rand[idx1], &arr_rand[idx2]);
     }
 
-        //inserttion
-    //arr_up
+    // inserttion
+    // arr_up
     start = clock();
     insertion_sort(arr_up, size);
     finish = clock();
-    duration = ((double)(finish - start)) / CLOCKS_PER_SEC;
+    duration = (double)(finish - start);
     printf("---insertion sort arr_up---\n");
     printf("duration = %0lf\n", duration);
-    //arr_down
+    // arr_down
     start = clock();
     insertion_sort(arr_down, size);
     finish = clock();
-    duration = ((double)(finish - start)) / CLOCKS_PER_SEC;
+    duration = (double)(finish - start);
     printf("---insertion sort arr_down---\n");
     printf("duration = %0lf\n", duration);
-    //arr_rand
+    // arr_rand
     start = clock();
     insertion_sort(arr_rand, size);
     finish = clock();
-    duration = ((double)(finish - start)) / CLOCKS_PER_SEC;
+    duration = (double)(finish - start);
     printf("---insertion sort arr_rand---\n");
     printf("duration = %0lf\n", duration);
+
+    // print
+    printf("¿À¸§Â÷¼ø ");
+    print_list(arr_up, size);
+    printf("³»¸²Â÷¼ø ");
+    print_list(arr_down, size);
+    printf("·£´ı¹è¿­ ");
+    print_list(arr_rand, size);
 
     printf("------------------------------\n");
 
@@ -281,23 +291,31 @@ int main()
     start = clock();
     shell_sort(arr_up, size);
     finish = clock();
-    duration = ((double)(finish - start)) / CLOCKS_PER_SEC;
+    duration = (double)(finish - start);
     printf("---shell sort arr_up---\n");
     printf("duration = %0lf\n", duration);
     // arr_down
     start = clock();
     shell_sort(arr_down, size);
     finish = clock();
-    duration = ((double)(finish - start)) / CLOCKS_PER_SEC;
+    duration = (double)(finish - start);
     printf("---shell sort arr_down---\n");
     printf("duration = %0lf\n", duration);
     // arr_rand
     start = clock();
     shell_sort(arr_rand, size);
     finish = clock();
-    duration = ((double)(finish - start)) / CLOCKS_PER_SEC;
+    duration = (double)(finish - start);
     printf("---shell sort arr_rand---\n");
     printf("duration = %0lf\n", duration);
+
+    // print
+    printf("¿À¸§Â÷¼ø ");
+    print_list(arr_up, size);
+    printf("³»¸²Â÷¼ø ");
+    print_list(arr_down, size);
+    printf("·£´ı¹è¿­ ");
+    print_list(arr_rand, size);
 
     printf("------------------------------\n");
 
@@ -322,25 +340,33 @@ int main()
     // quick sort
     // arr_up
     start = clock();
-    quick_sort(arr_up, 0, size-1);
+    quick_sort(arr_up, 0, size - 1);
     finish = clock();
-    duration = ((double)(finish - start)) / CLOCKS_PER_SEC;
+    duration = (double)(finish - start);
     printf("---quick sort arr_up---\n");
     printf("duration = %0lf\n", duration);
     // arr_down
     start = clock();
-    quick_sort(arr_down, 0, size-1);
+    quick_sort(arr_down, 0, size - 1);
     finish = clock();
-    duration = ((double)(finish - start)) / CLOCKS_PER_SEC;
+    duration = (double)(finish - start);
     printf("---quick sort arr_down---\n");
     printf("duration = %0lf\n", duration);
     // arr_rand
     start = clock();
-    quick_sort(arr_rand, 0, size-1);
+    quick_sort(arr_rand, 0, size - 1);
     finish = clock();
-    duration = ((double)(finish - start)) / CLOCKS_PER_SEC;
+    duration = (double)(finish - start);
     printf("---quick sort arr_rand---\n");
     printf("duration = %0lf\n", duration);
+
+    // print
+    printf("¿À¸§Â÷¼ø ");
+    print_list(arr_up, size);
+    printf("³»¸²Â÷¼ø ");
+    print_list(arr_down, size);
+    printf("·£´ı¹è¿­ ");
+    print_list(arr_rand, size);
 
     printf("------------------------------\n");
 
@@ -373,7 +399,7 @@ int main()
     start = clock();
     heap_sort(heap_up.heap, size);
     finish = clock();
-    duration = ((double)(finish - start)) / CLOCKS_PER_SEC;
+    duration = (double)(finish - start);
     printf("---heap sort arr_up---\n");
     printf("duration = %0lf\n", duration);
     // arr_down
@@ -386,7 +412,7 @@ int main()
     start = clock();
     heap_sort(heap_down.heap, size);
     finish = clock();
-    duration = ((double)(finish - start)) / CLOCKS_PER_SEC;
+    duration = (double)(finish - start);
     printf("---heap sort arr_down---\n");
     printf("duration = %0lf\n", duration);
     // arr_rand
@@ -399,24 +425,23 @@ int main()
     start = clock();
     heap_sort(heap_rand.heap, size);
     finish = clock();
-    duration = ((double)(finish - start)) / CLOCKS_PER_SEC;
+    duration = (double)(finish - start);
     printf("---heap sort arr_rand---\n");
     printf("duration = %0lf\n", duration);
 
-    // initail list
-    //  printf("initail list\n");
-    printf("( ");
-    //print_list(arr_up, size);
-    //  print_list(arr_down, size);
-    //  print_list(arr_rand, size);
-    // for (i = 1; i <= size; i++)
-    // {
-    //     printf("%d ", heap_up.heap[i]);
-    // }
-    // for (i = 1; i <= size; i++)
-    // {
-    //     printf("%d ", heap_down.heap[i]);
-    // }
+    printf("¿À¸§Â÷¼ø ( ");
+    for (i = 1; i <= size; i++)
+    {
+        printf("%d ", heap_up.heap[i]);
+    }
+    printf(")\n");
+    printf("³»¸²Â÷¼ø ( ");
+    for (i = 1; i <= size; i++)
+    {
+        printf("%d ", heap_down.heap[i]);
+    }
+    printf(")\n");
+    printf("·£´ı¹è¿­ ( ");
     for (i = 1; i <= size; i++)
     {
         printf("%d ", heap_rand.heap[i]);
@@ -424,4 +449,3 @@ int main()
     printf(")\n");
     return 0;
 }
-
