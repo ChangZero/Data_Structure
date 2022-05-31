@@ -211,7 +211,8 @@ int main()
 
     printf("input: N=");
     scanf("%d", &size);
-    printf("------------------------------\n");
+
+    
 
     int *arr_up = (int *)malloc(sizeof(int) * size);
     int *arr_down = (int *)malloc(sizeof(int) * size);
@@ -234,6 +235,15 @@ int main()
         idx2 = rand() % size;
         swap(&arr_rand[idx1], &arr_rand[idx2]);
     }
+
+    printf("-------초기 배열 입력------\n");
+    printf("오름차순 ");
+    print_list(arr_up, size);
+    printf("내림차순 ");
+    print_list(arr_down, size);
+    printf("랜덤배열 ");
+    print_list(arr_rand, size);
+    printf("------------------------------\n");
 
     // inserttion
     // arr_up
