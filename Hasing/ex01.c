@@ -55,16 +55,61 @@ void linear_insert(element item, element ht[])
     ht[i] = item;
 }
 
+void linear_delete(element item, element ht[])
+{
+    int i;
+    i = hash(item.key);
+    for (int j = 0; j < TABLE_SIZE; j++)
+    {
+        ht[i].key[j] = NULL;
+    }
+}
+
+void linear_print(element ht[])
+{
+    int i;
+    for (i = 0; i < TABLE_SIZE; i++)
+        printf("[%d]	%s\n", i, ht[i].key);
+}
 
 int main()
 {
-    int i;
+    int i, cmd;
+    char st[MAX_CHAR];
     element item;
-    strcpy(item.key,"ulsan");
-    linear_insert(item, hash_table);
-
-    for (i = 0; i < TABLE_SIZE;i++){
-        printf("%s\n", hash_table[i].key);
+    init_table(hash_table);
+    while(1){
+        printf("Please enter cmd(0=insert, 1=delete, 2=exit)=");
+        scanf("%d", &cmd);
+        switch (cmd)
+        {
+        case 0:
+            printf("Please insert key=");
+            scanf("%s", item.key);
+            strcpy(item.key, "ulsan");
+            linear_insert(item, hash_table);
+            linear_print(hash_table);
+            break;
+        
+        case 1:
+            printf("Please insert key=");
+            scanf("%s", st);
+            strcpy(item.key, "ulsan");
+            linear_delete(item, hash_table);
+            linear_print(hash_table);
+            break;
+        
+        case 2:
+            exit(1);
+            break;
+        
+        default:
+            printf("Wrong cmd\n");
+            break;
+        }
+        
     }
+    
+
     return 0;
 }
