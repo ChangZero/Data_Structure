@@ -4,10 +4,10 @@
 - BigO: 알고리즘 수행 시 데이터가 증가함에 따라 처리시간 증가율을 예측하기 위한 식; 함수의 상한을 표기함
 - 선형구조: 자료를 구성하는 원소들을 순차적으로 나열시킨 구조 (ex)배열, 연결리스트, 스택, 큐
 - 비선형구조: 하나의 자료 뒤에 여러개의 자료가 존재할 수 있는 형태 (ex)트리, 그래프
-### 배열 및 구조(Array & Structure)
+### [배열 및 구조(Array & Structure)](https://github.com/ChangZero/Data_Structure/blob/main/exersice_class/week02/ex01.c)
 포인터: 다른 변수의 주소값을 갖는 변수<br>
 이중포인터: 포인터의 주소값을 저장하는 변수<br>
-### 순환(Recursion)
+### [순환(Recursion)](https://github.com/ChangZero/Data_Structure/tree/main/Recursion)
 함수가 수행 도중에 자기 자신을 다시 호출하여 결과를 도출 (ex) 펙토리얼, 피보나치, 이항계수, 이진탐색
 
 **장점**
@@ -15,13 +15,13 @@
 
 **단점**
 > 함수호출에 따른 오버헤드(반복문보다 수행 속도 느림)
-## 스택(Stack)
+## [스택(Stack)](https://github.com/ChangZero/Data_Structure/blob/main/Stack%20and%20Queue/stack.c)
 LIFO, Push/Pop, 탐색 불가능<br>
 
 시간복잡도
 > O(1)
 
-## 큐(Queue)
+## [큐(Queue)](https://github.com/ChangZero/Data_Structure/blob/main/Stack%20and%20Queue/queue.c)
 FIFO, Enqueue/Dequeue, 탐색 불가능<br>
 시간복잡도
 > O(1)
@@ -30,7 +30,7 @@ FIFO, Enqueue/Dequeue, 탐색 불가능<br>
 > 선형큐의 문제점 해결(rear이 가르키는 포인터가 배열의 마지막 인덱스를 가르키고 있을 때 앞쪽에서 Dequeue로 발생한 배열의 빈 공간을 활용 불가) -> (rear+1) % size
 
 
-## 연결리스트(Linked List)
+## [연결리스트(Linked List)](https://github.com/ChangZero/Data_Structure/tree/main/Linked_list)
 단방향, 양방향, 원형<br>
 데이터를 저장하는 노드와 연결정보를 가지는 포인터로 구성, O(1):insert in the front , O(n): search, insert in the rear/원형연결리스트일때는 O(1)
 
@@ -46,7 +46,7 @@ FIFO, Enqueue/Dequeue, 탐색 불가능<br>
 **단점**
 > 1) 임의로 액세스를 허용할 수 없음. 즉, 첫 번째 노드부터 순차적으로 요소에 액세스 해야함 (이진 검색 수행 불가능)
 > 2) 포인터의 여분의 메모리 공간이 목록의 각 요소에 필요
-## 트리(Tree)
+## [트리(Tree)](https://github.com/ChangZero/Data_Structure/tree/main/Tree)
 노드(node)들과 노드들을 연결하는 간선(edge)들고 구성, 가장 첫 노드= Root Node, 계층구조
 
 **순회방법**
@@ -63,7 +63,7 @@ FIFO, Enqueue/Dequeue, 탐색 불가능<br>
 #### 완전이진트리(CBT, Complete Binary Tree)
 > 마지막 레벨을 제외하고 모든 레벨이 완전히 채워져 있는 트리(왼쪽부터 채워져야함), 다 채워질 필요 없음
 
-### 힙(Heap)
+### [힙(Heap)](https://github.com/ChangZero/Data_Structure/blob/main/heap/ex01.c)
 완전 이진 트리의 종류 중 하나<br>
 **우선 순위 큐**: 우선순위의 개념을 큐에 도입한 자료구조
 > 데이터간에 우선순위 존재, 우선순위가 높은 데이터가 먼저 나감<br>
@@ -76,7 +76,7 @@ FIFO, Enqueue/Dequeue, 탐색 불가능<br>
 > 삽입시: O(logn)<br>
 > 삭제시: O(logn)<br>
 
-### 이진탐색트리(BST, Binary Search Tree)
+### [이진탐색트리(BST, Binary Search Tree)](https://github.com/ChangZero/Data_Structure/blob/main/Tree/ex2.c)
 이진탐색 + 연결리스트<br>
 1. 모든 노드는 고유키를 가진다.
 2. 노드의 왼쪽 하위 트리에는 노드의 키보다 작은 키가 있는 노드만 포함
@@ -88,7 +88,7 @@ FIFO, Enqueue/Dequeue, 탐색 불가능<br>
 > skewed이면 O(n)
 
 
-## 그래프(Graph)
+## [그래프(Graph)](https://github.com/ChangZero/Data_Structure/tree/main/Graph)
 정점(Vertex)와 간선(Edge)로 구성
 **그래프와 트리의 차이점**
 > 트리는 그래프의 하위개념이다. 다만, 트리는 사이클이 존재하지 않는(acyclic) 그래프이다.
@@ -102,14 +102,14 @@ FIFO, Enqueue/Dequeue, 탐색 불가능<br>
 6. 연결 그래프(Connected Graph): 떨어져 있는 정점이 없는 그래프
 7. 단절 그래프(Disconnected Graph): 연결되지 않는 정점이 있는 그래프
 
-### DFS
+### [DFS](https://github.com/ChangZero/Data_Structure/blob/main/Graph/ex01.c)
 > 깊이 우선 탐색, 스택 or 재귀함수로 구현
 
 시간복잡도
 > 인접행렬: O(V^2)
 > 인접리스트: O(V+E)
 
-### BFS
+### [BFS](https://github.com/ChangZero/Data_Structure/blob/main/Graph/ex01.c)
 > 너비 우선 탐색, 큐로 구현
 
 시간복잡도
@@ -133,7 +133,7 @@ Spanning Tree 중에서 사용된 간선들의 가중치 합이 최소인 트리
 >       - 즉, 가장 낮은 가중치를 먼저 선택한다.
 > 3. 위의 과정을 트리가 (N-1)개의 간선을 가질 때까지 반복한다.
 
-#### Kruskal`s MSP algorithm
+#### [Kruskal`s MSP algorithm](https://github.com/ChangZero/Data_Structure/blob/main/Graph/krusdal.c)
 탐욕적인(Greedy) 방법을 이용하여 그래프의 모든 정점을 최소 비용으로 연결하는 최적 해답을 구하는 알고리즘
 
 **과정**
@@ -148,7 +148,7 @@ Spanning Tree 중에서 사용된 간선들의 가중치 합이 최소인 트리
 > Prim MSP는 정점 선택을 기반으로 하는 알고리즘으로 이전 단계에서 만들어진 신장 트리를 확장하는 방법이지만, Kruskal MST는 간선 선택을 기반으로 하는 알고리즘으로 이전 단게 만들어진 신장 트리와는 상관없이 무조건 최소 간선만을 선택하는 방법이다.
 
 
-### Djkstra`s SP algorithm
+### [Djkstra`s SP algorithm](https://github.com/ChangZero/Data_Structure/blob/main/Graph/Dijkstra.c)
 동적계획법을 활용하여 그래프의 한 정점에서 다른 정점까지의 최단 경로를 구하는 알고리즘
 
 시간복잡도
@@ -161,11 +161,14 @@ Spanning Tree 중에서 사용된 간선들의 가중치 합이 최소인 트리
 > 4. 해당 노드를 거쳐 특정한 노드로 가는 경우를 고려하여 최소비용 갱신
 > 5. 3번, 4번 과정 반복
 
-## 정렬(Sorting)
+## [정렬(Sorting)](https://github.com/ChangZero/Data_Structure/tree/main/Sorting)
 안정정렬(Stable Sort): 중복된 값을 입력 순서와 동일하게 정렬 [ex] 버블정렬, 삽입정렬<br>
 불안정정렬(Unstable Sort): 중복된 값이 입력 순서와 동일하지 않게 정렬 [ex] 퀵정렬<br>
 ### 버블정렬(Bubble sorting)
 서로 인접한 두 원소의 크기를 비교하여, 조건에 맞지 않다면 자리를 교환하며 정렬하는 알고리즘
+![버블정렬](https://github.com/ChangZero/Data_Structure/assets/97018869/0735a673-9ba9-4b9e-9916-93b3cb8beb8d)
+
+
 
 시간복잡도
 > 최선, 최악, 평균의 경우 모두 O(n^2)
@@ -181,6 +184,8 @@ Spanning Tree 중에서 사용된 간선들의 가중치 합이 최소인 트리
 
 ### 삽입정렬(Insertion sorting)
 2번째 원소부터 시작하여 그 앞의 원소들과 비교하여 삽입할 위치를 지정한 후, 원소를 뒤로 옯기고 지정된 자리에 자료를 삽입하여 정렬하는 알고리즘
+<br>
+![삽입정렬](https://github.com/ChangZero/Data_Structure/assets/97018869/10cf6790-83bd-4df1-aa81-5a20c169b1b5)
 
 과정
 > 1. **배열 순회 시작**: 배열의 두 번째 요소부터 시작하여 마지막 요소까지 순회합니다.
@@ -223,6 +228,8 @@ Spanning Tree 중에서 사용된 간선들의 가중치 합이 최소인 트리
 
 ### 퀵정렬(Quick sorting)
 분할 정복 방법을 기반으로 하는 정렬 알고리즘으로, 평균적으로 매우 빠른 실행 속도를 가지는 알고리즘 중 하나입니다. 배열을 분할하고 정복하는 방식을 사용하여 배열을 정렬한다.
+<br>
+![퀵정렬](https://github.com/ChangZero/Data_Structure/assets/97018869/5b3a1b72-52f4-4ad6-b0d4-989d0652baeb)
 
 **분할 정복(Divide and Conquer)**
 > 문제를 작은 2개의 문제로 분리하고 각각을 해결한 다음, 결과를 모아서 원래의 문제를 해결하는 전략
@@ -258,7 +265,7 @@ Spanning Tree 중에서 사용된 간선들의 가중치 합이 최소인 트리
 > 빠른 속도
 
 
-## 해싱(Hashing)
+## [해싱(Hashing)](https://github.com/ChangZero/Data_Structure/tree/main/Hasing)
 특정 키 값으로 데이터의 저장 위치를 탐색, 삭제, 저장하는 방법
 
 _해시 테이블을 쓰는 이유?_
@@ -276,18 +283,24 @@ _해시 테이블을 쓰는 이유?_
 > 4. **제곱 탐사** : 정해진 고정 폭을 제곱수로 옮겨 해시값의 중복을 피함
 
 ## 텀프로젝트1
-**스택을 활용한 계산기 프로그램**
+[**스택을 활용한 계산기 프로그램**](https://github.com/ChangZero/Data_Structure/blob/main/project1/proj1.c)
 <br>
 텍스트 문서로 부터 infix 표현을 입력받아서 해당 Infix 스트링을 postfix형태로 변환하고 postfix 스트링을 출력한다. 마지막으로 postfix 스트링을 evaluate (평가)하고 값을 출력하는 계산기 설계
 ## 텀프로젝트2
-**다중 연결리스트를 활용한 학생등록 시스템**
+[**다중 연결리스트를 활용한 학생등록 시스템**](https://github.com/ChangZero/Data_Structure/blob/main/project2/proj2.c)
 <br>
 5000명의 학생과 35개의 코스 등록(add) 및 등록취소(drop)를 처리하는 소프트웨어 시스템 설계
 
 
 ## 텀프로젝트3
-**이진탐색트리를 활용한 재고 관리 시스템**<br>
+[**이진탐색트리를 활용한 재고 관리 시스템**](https://github.com/ChangZero/Data_Structure/blob/main/project3/proj3.c)
+<br>
 새로운 컨포넌트(conponent)를 추가 (add), 컨포넌트를 삭제 (delete), 재고품목에서부터 아이템을 제거 (remove), 재고품목에 아이템을 추가 (add), 그리고 재고목록을 출력하는 재고관리 시스템 설계
 
 ## 텀프로젝트4
-정렬알고리즘 성능 비교
+[**정렬알고리즘 성능 비교**](https://github.com/ChangZero/Data_Structure/blob/main/project4/proj4.c)
+
+## 참고자료
+HOROWITZ, SAHNI, ANDERSON-FREED, ⌜C로 쓴 자료구조론⌟, 이석호, 교보문고, 2008<br>
+https://github.com/gyoogle/tech-interview-for-developer/tree/master <br>
+GIF 이미지 출처: https://jinhyy.tistory.com/9
